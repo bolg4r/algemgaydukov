@@ -2,7 +2,7 @@
 #include<math.h>
 
 int main(void) {
-  double x1,x2,x3,y1,y2,y3,z1,z2,z3,k=0;
+  double x1,x2,x3,y1,y2,y3,z1,z2,z3,k=0,t=0;
   scanf("%lf %lf %lf",&x1,&y1,&z1);
   scanf("%lf %lf %lf",&x2,&y2,&z2);
   scanf("%lf %lf %lf",&x3,&y3,&z3);
@@ -11,6 +11,7 @@ int main(void) {
   int opr=x1*y2*z3+x3*y1*z2+x2*y3*z1-x3*y2*z1-x2*y1*z3-x1*z2*y3;
   if (opr==0){
     printf("Компланарны \n");
+    t=1;
   } else printf("Не компланарны \n");
   if (y1*z2-z1*y2==0 && z1*x2-x1*z2==0 && x1*y2-z1*x2==0) {
     printf("первый и второй колллинеарны \n");
@@ -28,11 +29,11 @@ int main(void) {
     printf("то есть все коллинеарны \n");
     printf("Ранг равен 1");
   } 
-  if (k==1){
-    printf("Ранг равен 2");
-  }
-  if (k==0){
+  
+  if (t==1){
     printf("Ранг равен 3");
+  } else if (k==1) {
+    printf("Ранг равен 2");
   }
     return 0;
 }
