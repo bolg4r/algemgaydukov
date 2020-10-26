@@ -1,52 +1,67 @@
 #include <stdio.h>
-#include<math.h>
+double modul(double u){
+  return u<0 ?-1*u :u;
+}
 
 int main(void) {
-  double x1,x2,x3,y1,y2,y3,z1,z2,z3;
-  int k=0,t=0;
-  scanf("%lf %lf %lf",&x1,&y1,&z1);
-  scanf("%lf %lf %lf",&x2,&y2,&z2);
-  scanf("%lf %lf %lf",&x3,&y3,&z3);
-  /*scanf("%d %d %d ",&x2,&y2,&z2);
-  scanf("%d %d %d ",&x3,&y3,&z3);*/
-  int opr=x1*y2*z3+x3*y1*z2+x2*y3*z1-x3*y2*z1-x2*y1*z3-x1*z2*y3;
-  if (opr==0){
-    printf("Компланарны \n");
-    
-  } else {
-    printf("Не компланарны \n");
-    t=1;
+  int n,m,l,k=0;
+  double eps=0.0000001;
+  scanf("%d %d",&m,&n );
+  double a[n][m];
+  for (int i=0;i<n;i++){
+    for (int j=0;j<m;j++){
+      scanf("%lf",&a[i][j]);
     }
-  if (y1*z2-z1*y2==0 && z1*x2-x1*z2==0 && x1*y2-z1*x2==0) {
-    printf("первый и второй колллинеарны \n");
-    k++;
   }
-  if (y1*z3-z1*y3==0 && z1*x3-x1*z3==0 && x1*y3-z1*x3==0) {
-    printf("третий и второй колллинеарны \n");
-    k++;
+  int i=0,j=0;
+  for (int l=0;l<n;l++){
+    double max=modul(a[l][l]);
+    i=l;
+    while (a[i][l]==0 && i<m) {
+      i++;
+    }
+    k=l;
+    if (i==m) k=l+1;
+    if (i!=l){
+      for (int j = 0; j < m; j++) {
+        double temp = a[l][j];
+        a[l][j] = a[i][j];
+        a[i][j] = temp;
+      }
+    }
+    double cur=a[l][k];
+    for (int i=l;i<n;i++){
+        if ((cur<0?cur*(-1):cur) <eps) break;
+        double koef=a[i][k]/cur;
+        for (int j=l;j<m;j++){
+          a[i][j]-=a[l][j]*koef;
+        }
+      }
   }
-  if (y3*z2-z3*y2==0 && z3*x2-x3*z3==0 && x3*y2-z3*x2==0) {
-    printf("первый и третий колллинеарны \n");
-    k++;
+  printf("Базис: \n");
+  int rank=0;
+  for (int i=0;i<n;i++){
+    int t=1;
+    for (int j=0;j<m;j++){
+      printf("%lf ",a[i][j]);
+      if (a[i][j] && t){
+        rank++;
+        t=0;
+      }
+    }
+    printf("\n");
   }
-  if (k==3){
-    printf("то есть все коллинеарны \n");
-  } 
-  //printf ("%d",k);
-  if (t==1){
-    printf("Ранг равен 3");
-  } else if (k==0) {
-    printf("Ранг равен 2");
-  } else if (k==3) {
-      if (x1==0 && y1==0 && z1==0 && x2==0 && y2==0 && z2==0 && x3==0 && y3==0 && z3==0 ){
-        printf("Ранг равен 0");
-    } else 
-      printf("Ранг равен 1");
-    } else printf("Ранг равен 2");
-  
-
-
-
-  
-    return 0;
+  printf("Ранг: %d \n", rank);
+  int razm=m;
+  for (int i=0;i<m;i++) {
+    int prov=0;
+    for (int j=0;j<n;j++){
+      if (a[j][i]) prov=1; 
+    }
+    if (!prov) razm--;
+  }
+  if (rank==razm){
+    printf("Линейно зависимая");
+  } else printf("Линейно независимая");
+  return 0;
 }
