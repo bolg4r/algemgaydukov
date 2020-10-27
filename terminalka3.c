@@ -17,20 +17,22 @@ int main(void) {
   for (int l=0;l<n;l++){
     double max=modul(a[l][l]);
     i=l;
-    while (a[i][l]==0) {
+    while (a[i][l]==0 && i<m) {
       i++;
     }
+    k=l;
+    if (i==m) k=l+1;
     if (i!=l){
-    for (int j = 0; j < m; j++) {
-      double temp = a[l][j];
-      a[l][j] = a[i][j];
-      a[i][j] = temp;
+      for (int j = 0; j < m; j++) {
+        double temp = a[l][j];
+        a[l][j] = a[i][j];
+        a[i][j] = temp;
+      }
     }
-    }
-    double cur=a[l][l];
+    double cur=a[l][k];
     for (int i=l+1;i<n;i++){
         if ((cur<0?cur*(-1):cur) <eps) break;
-        double koef=a[i][l]/cur;
+        double koef=a[i][k]/cur;
         for (int j=l;j<m;j++){
           a[i][j]-=a[l][j]*koef;
         }
@@ -50,22 +52,16 @@ int main(void) {
     printf("\n");
   }
   printf("Ранг: %d \n", rank);
-  /*double ans[n];
-  for (int i=n-1;i>=0;i--){
-    if ((a[i][i]<0?a[i][i]*-1:a[i][i])> eps) ans[i]=a[i][n]/a[i][i];
-    else ans[i]=0;
-    for (int j=0;j<i;j++){
-      a[j][n]-=a[j][i]*ans[i];
+  int razm=m;
+  for (int i=0;i<m;i++) {
+    int prov=0;
+    for (int j=0;j<n;j++){
+      if (a[j][i]) prov=1; 
     }
+    if (!prov) razm--;
   }
-  for (int i=0;i<n;i++){
-    printf("%0.11lf\n",ans[i]);
-  }
-  */
-  if (rank==m){
+  if (rank==razm){
     printf("Линейно зависимая");
   } else printf("Линейно независимая");
-
-  
   return 0;
 }
