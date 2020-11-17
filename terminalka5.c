@@ -51,7 +51,7 @@ int main(void) {
     }
   }
   for (int i=0;i<n;i++){
-    printf("%0.11lf\n",ans[i]);
+    printf("x[%d] = %0.11lf\n",i+1,ans[i]);
   }
   
   
